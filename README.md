@@ -1,2 +1,2 @@
 # Leauge_of_Icons
-A classifying deep learning model that distinguished between league of legends portraits from other portraits
+A classifying deep learning model that distinguishesbetween league of legends portraits from other portraits
