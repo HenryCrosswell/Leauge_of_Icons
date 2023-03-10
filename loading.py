@@ -11,6 +11,7 @@ from skimage import io
 import pandas as pd 
 import os
 from os import listdir
+import PIL
 
 def csv_from_images_and_labels(): 
     absolute_path= os.path.dirname(__file__)
@@ -36,7 +37,9 @@ class CustomDatasetFromCSV(Dataset):
     def __getitem__(self, index):
         icon_image_name = self.data['icon'][index]
         image_path = os.path.join(self.root_dir, icon_image_name)
-        image = plt.imread(image_path)
+        rgba_image = PIL.Image.open(image_path)
+        image = rgba_image.convert('RGB')
+        image = np.array(image)
         label = self.data['label'][index]
         return image, label
 
@@ -49,5 +52,5 @@ def split_dataset(image_dataset):
     train_split = int(len(image_dataset)*0.8)
     dev_split = int(len(image_dataset)*0.1)
     test_split = int(len(image_dataset)-(dev_split+train_split))
-    train_images, dev_images, test_images = torch.utils.data.random_split(image_dataset, [train_split, dev_split, test_split], generator=torch.Generator().manual_seed(2))
-    return train_images, dev_images, test_images    
+    train_labelled_images, dev_labelled_images, test_labelled_images = torch.utils.data.random_split(image_dataset, [train_split, dev_split, test_split], generator=torch.Generator().manual_seed(2))
+    return train_labelled_images, dev_labelled_images, test_labelled_images    
