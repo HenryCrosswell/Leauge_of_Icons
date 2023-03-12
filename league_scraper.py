@@ -1,8 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import urllib
-
-#url = "https://lol.fandom.com/wiki/Category:Champion_Square_Images"
+from pathlib import Path
 url = 'https://lol.fandom.com/wiki/Category:Champion_Square_Images?filefrom=YuumiSquare.png#mw-category-media'
 url_img_xpath = '//*[@id="mw-category-media"]/ul/li[*]/div/div[1]/div/a/img'
 
@@ -33,4 +32,5 @@ for img in imgResults:
         continue
 
 for i, key in enumerate(src):
-    urllib.request.urlretrieve(str(src[key]),"F:/Users/Henry/Coding/League of Icons/Icons/League/League_{}.jpg".format(key))
+    urllib.request.urlretrieve(str(src[key]),Path("./Icons/League/League_{}.jpg".format(key)))
+
