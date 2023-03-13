@@ -4,7 +4,7 @@ import urllib
 from PIL import Image
 from pathlib import Path
 
-url = 'https://lol.fandom.com/wiki/Category:Ability_Icons?filefrom=Love+Tap.png#mw-category-media'
+url = 'https://lol.fandom.com/wiki/Category:Ability_Icons?fileuntil=Dragon+Strike.png#mw-category-media'
 url_img_xpath = '//*[@id="mw-category-media"]/ul/li[*]/div/div[1]/div/a/img'
 
 
@@ -31,8 +31,8 @@ for img in imgResults:
     src[key] = value
 
 for i, key in enumerate(src):
-    urllib.request.urlretrieve(str(src[key]),Path("./Icons/Others_{}.jpg".format(key)))
-    c = Image.open(Path('./Icons/Others_'+key+'.jpg'))
+    urllib.request.urlretrieve(str(src[key]),Path(f"./new_unused_images/Others_{key}.jpg"))
+    c = Image.open(Path(f"./new_unused_images/Others_{key}.jpg"))
     d = c.resize((120,120), resample=Image.BICUBIC)
     rgb_im = d.convert('RGB')
-    rgb_im =  rgb_im.save(Path('./Icons/Others_'+key+'.jpg'))
+    rgb_im =  rgb_im.save(Path(f"./new_unused_images/Others_{key}.jpg"))
