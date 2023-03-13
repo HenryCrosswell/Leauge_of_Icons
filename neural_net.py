@@ -3,24 +3,35 @@ from torch import nn
 import torch.optim as optim
 import torch.nn as nn
 
+hidden_layer = 400
+dropout_prob = 0.5
+epochs = 25
+lr = 0.00001
 class NeuralNetwork(nn.Module):
     def __init__(self):
         super().__init__()
         self.flatten = nn.Flatten()
+        self.dropout = nn.Dropout(dropout_prob)
         self.linear_relu_stack = nn.Sequential(
-            nn.Linear(3*(120*120), 1000),
+            nn.Linear(3*(120*120), hidden_layer),
             nn.ReLU(),
-            nn.Linear(1000, 1000),
+            nn.Linear(hidden_layer, hidden_layer),
             nn.ReLU(),
-            nn.Linear(1000, 2),
+            nn.Linear(hidden_layer, hidden_layer),
+            nn.ReLU(),
+            nn.Linear(hidden_layer, 2),
         )
-
     def forward(self, x):
         x = self.flatten(x)
+        x = self.dropout(x)
         logits = self.linear_relu_stack(x)
         return logits
 
-def train_neural_network(train_dataloader, lr):
+
+def train_neural_network(train_dataloader):
+    print(f'The learning rate is: {float(lr)}')
+    print(f'hidden_layers: {hidden_layer}')
+    print(f'dropout prob: {dropout_prob}')
     correct = 0
     total = 0
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -28,7 +39,7 @@ def train_neural_network(train_dataloader, lr):
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=lr, momentum= 0.9)
     incorrect_images_and_label = {}
-    for epoch in range(6):  # loop over the dataset multiple times
+    for epoch in range(epochs):  # loop over the dataset multiple times
         running_loss = 0.0
         dataset_length = 0
         for i, data in enumerate(train_dataloader, 0):
